@@ -2,7 +2,7 @@ const chai = require('chai');
 const assert = chai.assert;
 
 const Solver = require('../controllers/sudoku-solver.js');
-let solver;
+let solver = new Solver(); 
 
 const validPuzzle = '1.5..2.84..63.12.7.2..5..9..1....8.2.3....9..5.....1.4......6.7.8..2..1.5.....4.3.';
 const invalidCharPuzzle = '1.5..2.84..63.12.7.2..5..9..1....8.2.3....9..5....A1.4......6.7.8..2..1.5.....4.3.';
