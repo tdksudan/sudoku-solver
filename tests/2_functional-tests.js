@@ -107,5 +107,48 @@ suite('Functional Tests', () => {
                 done();
             });
     });
+    
+    test ('Check a puzzle placement with missing required fields: POST /api/check', done => {
+        chai.request(server)
+            .post('/api/check')
+            .send ({
+                puzzle: validPuzzle, 
+                value: '5'
+            })
+            .end((err,res) => {
+                assert.deepEqual(res.body, { error: 'Required field(s) missing'});
+                done();
+            });
+    });
+
+    test('Check a puzzle placement with invalid characters: POST /api/check', done=> {
+        const invalidPuzzle = validPuzzle.slice(0,10) + '*' + validPuzzle.slice(11);
+        chai.request(server)
+            .post('/api/check')
+            .send({
+                puzzle: invalidPuzzle,
+                coordinate: '82',
+                value: '4'
+            })
+            .end((err, res) => {
+                assert.deepEqual(res.body, {error: 'Invalid characters in puzzle'});
+                done();
+            });
+    });
+
+    test('Check a puzzle placement with incorrect length: POST /api/check', done => {
+        chai.request(server)
+            .post('/api/check')
+            .send({
+                puzzle: '1.5..9',
+                coordinate: 'A1',
+                value: '2'
+            })
+            .end((err, res)=>{
+                assert.deepEqual(res.body, {error: "Expected puzzle to be 81 characters long"});
+                done();
+            });
+    });
+
 });
 
